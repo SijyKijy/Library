@@ -1,12 +1,123 @@
-﻿<Window x:Class="WpfLibrary.MainWindow"
+﻿<Window x:Name="window" x:Class="WpfLibrary.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:WpfLibrary.ViewModels"
         xmlns:local="clr-namespace:WpfLibrary"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Library"
+        Height="450"
+        Width="800"
+        MinHeight="450"
+        MinWidth="800"
+        >
 
+    <Window.DataContext>
+        <vm:MainViewModel/>
+    </Window.DataContext>
+
+    <Window.Resources>
+        <ResourceDictionary>
+
+            <Style TargetType="TextBlock" x:Key="Center">
+                <Setter Property="TextAlignment" Value="Center"/>
+                <Setter Property="Margin" Value="5"/>
+            </Style>
+
+        </ResourceDictionary>
+    </Window.Resources>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!--#region Left panel-->
+        <StackPanel Background="Gray">
+            
+            <StackPanel.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="Margin" Value="10,10,10,0"/>
+                </Style>
+            </StackPanel.Resources>
+
+            <Button Content="Обновить" Command="{Binding GetBooks}" CommandParameter="{Binding Book}"/>
+            <Grid Margin="10">
+                <Label Content="Count"/>
+                <TextBox Text="{Binding Count}" Margin="50,0,0,0"/>
+            </Grid>
+            <Button Content="Удалить" Command ="{Binding DeleteBook}"/>
+
+            <StackPanel DataContext="{Binding Book}">
+                <Label Content="Создание" HorizontalAlignment="Center"/>
+                <Grid>
+                    <Label Content="ID"/>
+                    <TextBox Text="{Binding Id}" Margin="50,0,0,0" IsEnabled="False"/>
+                </Grid>
+                <Grid>
+                    <Label Content="Author"/>
+                    <TextBox Text="{Binding Author, UpdateSourceTrigger=PropertyChanged}" Margin="50,0,0,0"/>
+                </Grid>
+                <Grid>
+                    <Label Content="Title (!)"/>
+                    <TextBox Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" Margin="50,0,0,0"/>
+                </Grid>
+                <Grid>
+                    <Label Content="Price"/>
+                    <TextBox Text="{Binding Price, UpdateSourceTrigger=PropertyChanged}" Margin="50,0,0,0"/>
+                </Grid>
+            </StackPanel>
+            <Button Content="Создать" Command="{Binding AddBook}"/>
+            <Button Content="Редактировать" Command="{Binding EditBook}"/>
+        </StackPanel>
+        <!--#endregion-->
+
+        <!--#region List books-->
+        <Grid Grid.Column="1">
+            <ListBox
+                HorizontalContentAlignment="Stretch"
+                ItemsSource="{Binding Books, Mode=TwoWay}"
+                SelectedItem="{Binding Book}">
+                
+                <!-- Header -->
+                <ListBox.Template>
+                    <ControlTemplate>
+                        <DockPanel>
+                            <UniformGrid Columns="4" DockPanel.Dock="Top">
+                                <UniformGrid.Resources>
+                                    <Style TargetType="TextBlock" BasedOn="{StaticResource Center}"/>
+                                </UniformGrid.Resources>
+
+                                <TextBlock Text="ID"/>
+                                <TextBlock Text="Автор"/>
+                                <TextBlock Text="Название"/>
+                                <TextBlock Text="Цена"/>
+                            </UniformGrid>
+                            <ItemsPresenter></ItemsPresenter>
+                        </DockPanel>
+                    </ControlTemplate>
+                </ListBox.Template>
+                
+                <!-- Main list -->
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <UniformGrid Columns="4">
+                            <UniformGrid.Resources>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource Center}"/>
+                            </UniformGrid.Resources>
+                            <TextBlock Text="{Binding Path=Id}" TextAlignment="Left"/>
+                            <TextBlock Text="{Binding Path=Author}"/>
+                            <TextBlock Text="{Binding Path=Title}"/>
+                            <TextBlock Text="{Binding Path=Price, StringFormat={}{0} руб.}"/>
+                        </UniformGrid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+                
+            </ListBox>
+        </Grid>
+        <!--#endregion-->
+        
     </Grid>
 </Window>
