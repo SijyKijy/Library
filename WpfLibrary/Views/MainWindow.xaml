@@ -27,7 +27,7 @@
 
         </ResourceDictionary>
     </Window.Resources>
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="150"/>
@@ -36,7 +36,7 @@
 
         <!--#region Left panel-->
         <StackPanel Background="Gray">
-            
+
             <StackPanel.Resources>
                 <Style TargetType="Button">
                     <Setter Property="Margin" Value="10,10,10,0"/>
@@ -74,50 +74,50 @@
         </StackPanel>
         <!--#endregion-->
 
+
         <!--#region List books-->
         <Grid Grid.Column="1">
-            <ListBox
+            <!-- Header -->
+            <Grid>
+                <DockPanel LastChildFill="True">
+                    <UniformGrid Columns="4" DockPanel.Dock="Top">
+                        <UniformGrid.Resources>
+                            <Style TargetType="TextBlock" BasedOn="{StaticResource Center}"/>
+                        </UniformGrid.Resources>
+
+                        <TextBlock Text="ID"/>
+                        <TextBlock Text="Автор"/>
+                        <TextBlock Text="Название"/>
+                        <TextBlock Text="Цена"/>
+                    </UniformGrid>
+                    <ItemsPresenter></ItemsPresenter>
+                </DockPanel>
+            </Grid>
+            <!-- Main List -->
+            <Grid Margin="0,25,0,0">
+                <ListBox
                 HorizontalContentAlignment="Stretch"
-                ItemsSource="{Binding Books, Mode=TwoWay}"
+                ItemsSource="{Binding Books}"
                 SelectedItem="{Binding Book}">
-                
-                <!-- Header -->
-                <ListBox.Template>
-                    <ControlTemplate>
-                        <DockPanel>
-                            <UniformGrid Columns="4" DockPanel.Dock="Top">
+
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <UniformGrid Columns="4">
                                 <UniformGrid.Resources>
                                     <Style TargetType="TextBlock" BasedOn="{StaticResource Center}"/>
                                 </UniformGrid.Resources>
-
-                                <TextBlock Text="ID"/>
-                                <TextBlock Text="Автор"/>
-                                <TextBlock Text="Название"/>
-                                <TextBlock Text="Цена"/>
+                                <TextBlock Text="{Binding Path=Id}" TextAlignment="Left"/>
+                                <TextBlock Text="{Binding Path=Author}"/>
+                                <TextBlock Text="{Binding Path=Title}"/>
+                                <TextBlock Text="{Binding Path=Price, StringFormat={}{0} руб.}"/>
                             </UniformGrid>
-                            <ItemsPresenter></ItemsPresenter>
-                        </DockPanel>
-                    </ControlTemplate>
-                </ListBox.Template>
-                
-                <!-- Main list -->
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <UniformGrid Columns="4">
-                            <UniformGrid.Resources>
-                                <Style TargetType="TextBlock" BasedOn="{StaticResource Center}"/>
-                            </UniformGrid.Resources>
-                            <TextBlock Text="{Binding Path=Id}" TextAlignment="Left"/>
-                            <TextBlock Text="{Binding Path=Author}"/>
-                            <TextBlock Text="{Binding Path=Title}"/>
-                            <TextBlock Text="{Binding Path=Price, StringFormat={}{0} руб.}"/>
-                        </UniformGrid>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-                
-            </ListBox>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+
+                </ListBox>
+            </Grid>
         </Grid>
         <!--#endregion-->
-        
+
     </Grid>
 </Window>
