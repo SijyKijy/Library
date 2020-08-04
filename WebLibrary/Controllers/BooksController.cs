@@ -58,7 +58,7 @@ namespace WebLibrary.Controllers
         [HttpPost]
         public async Task<ActionResult<Book>> PostAsync(Book book)
         {
-            if (book == null)
+            if (book == null || book.Id != 0 || string.IsNullOrEmpty(book.Title.Trim(' ')))
             {
                 return BadRequest();
             }
@@ -73,7 +73,7 @@ namespace WebLibrary.Controllers
         [HttpPut]
         public async Task<ActionResult<Book>> PutAsync(Book book)
         {
-            if (book == null)
+            if (book == null || string.IsNullOrEmpty(book.Title.Trim(' ')))
             {
                 return BadRequest();
             }
